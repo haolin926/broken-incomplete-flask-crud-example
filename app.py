@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import request
+from flask import render_template
 from flask_mysqldb import MySQL
 from flask_cors import CORS
 import json
@@ -43,7 +44,7 @@ def read(): # Name of the method
     status=200,
     mimetype='application/json'
   )
-  return ret #Return the data in a string format
+  return render_template('index.html',results=Results) #render index.html with Results
 if __name__ == "__main__":
   app.run(host='0.0.0.0',port='8080') #Run the flask app at port 8080
 
