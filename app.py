@@ -68,7 +68,7 @@ def update():
   email = request.args.get('email')
   try:
     cur = mysql.connection.cursor() #create a connection to the SQL instance
-    s='''UPDATE students SET studenName = '{}', email = '{}' WHERE studentID = '{}' ;'''.format(name,email,id) # kludge - use stored proc or params
+    s='''UPDATE students SET studentName = '{}', email = '{}' WHERE studentID = '{}' ;'''.format(name,email,id) # kludge - use stored proc or params
     cur.execute(s)
     mysql.connection.commit()
 
