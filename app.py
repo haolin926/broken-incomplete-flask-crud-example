@@ -19,13 +19,15 @@ mysql.init_app(app)
 def add():
   name = request.args.get('name')
   email = request.args.get('email')
-  cur = mysql.connection.cursor() #create a connection to the SQL instance
-  s='''INSERT INTO students(studentName, email) VALUES('{}','{}');'''.format(name,email) # kludge - use stored proc or params
-  cur.execute(s)
-  mysql.connection.commit()
+  try:
+    cur = mysql.connection.cursor() #create a connection to the SQL instance
+    s='''INSERT INTO students(studentName, email) VALUES('{}','{}');'''.format(name,email) # kludge - use stored proc or params
+    cur.execute(s)
+    mysql.connection.commit()
 
-  return '{"Result":"Success"}' # Really? maybe we should check!
-  
+    return '{"Result":"Success"}'
+  except Exception as e:
+    return '{"Result":"Failure", "Error":"' + str(e) + '"}'
 @app.route("/") #Default - Show Data
 def read(): # Name of the method
   cur = mysql.connection.cursor() #create a connection to the SQL instance
@@ -45,6 +47,35 @@ def read(): # Name of the method
     mimetype='application/json'
   )
   return render_template('index.html',results=Results) #render index.html with Results
+
+@app.route("/delete") #Add Student
+def add():
+  id = request.args.get('id')
+  try:
+    cur = mysql.connection.cursor() #create a connection to the SQL instance
+    s='''DELETE FROM students WHERE studentID = '{}';'''.format(id) # kludge - use stored proc or params
+    cur.execute(s)
+    mysql.connection.commit()
+
+    return '{"Result":"Success"}'
+  except Exception as e:
+    return '{"Result":"Failure", "Error":"' + str(e) + '"}'
+  
+@app.route("/update") #Add Student
+def add():
+  id = request.args.get('id')
+  name = request.args.get('name')
+  email = request.args.get('email')
+  try:
+    cur = mysql.connection.cursor() #create a connection to the SQL instance
+    s='''UPDATE students SET studenName = '{}', email = '{}' WHERE studentID = '{}' ;'''.format(name,email,id) # kludge - use stored proc or params
+    cur.execute(s)
+    mysql.connection.commit()
+
+    return '{"Result":"Success"}'
+  except Exception as e:
+    return '{"Result":"Failure", "Error":"' + str(e) + '"}'
+
 if __name__ == "__main__":
   app.run(host='0.0.0.0',port='8080') #Run the flask app at port 8080
 
