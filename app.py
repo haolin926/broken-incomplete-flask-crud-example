@@ -49,7 +49,7 @@ def read(): # Name of the method
   return render_template('index.html',results=Results) #render index.html with Results
 
 @app.route("/delete") #Add Student
-def add():
+def delete():
   id = request.args.get('id')
   try:
     cur = mysql.connection.cursor() #create a connection to the SQL instance
@@ -61,20 +61,20 @@ def add():
   except Exception as e:
     return '{"Result":"Failure", "Error":"' + str(e) + '"}'
   
-# @app.route("/update") #Add Student
-# def add():
-#   id = request.args.get('id')
-#   name = request.args.get('name')
-#   email = request.args.get('email')
-#   try:
-#     cur = mysql.connection.cursor() #create a connection to the SQL instance
-#     s='''UPDATE students SET studenName = '{}', email = '{}' WHERE studentID = '{}' ;'''.format(name,email,id) # kludge - use stored proc or params
-#     cur.execute(s)
-#     mysql.connection.commit()
+@app.route("/update") #Add Student
+def update():
+  id = request.args.get('id')
+  name = request.args.get('name')
+  email = request.args.get('email')
+  try:
+    cur = mysql.connection.cursor() #create a connection to the SQL instance
+    s='''UPDATE students SET studenName = '{}', email = '{}' WHERE studentID = '{}' ;'''.format(name,email,id) # kludge - use stored proc or params
+    cur.execute(s)
+    mysql.connection.commit()
 
-#     return '{"Result":"Success"}'
-#   except Exception as e:
-#     return '{"Result":"Failure", "Error":"' + str(e) + '"}'
+    return '{"Result":"Success"}'
+  except Exception as e:
+    return '{"Result":"Failure", "Error":"' + str(e) + '"}'
 
 if __name__ == "__main__":
   app.run(host='0.0.0.0',port='8080') #Run the flask app at port 8080
