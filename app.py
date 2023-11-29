@@ -48,7 +48,7 @@ def read(): # Name of the method
   )
   return render_template('index.html',results=Results) #render index.html with Results
 
-@app.route("/delete") #Add Student
+@app.route("/delete") #remove Student
 def delete():
   id = request.args.get('id')
   try:
@@ -61,7 +61,7 @@ def delete():
   except Exception as e:
     return '{"Result":"Failure", "Error":"' + str(e) + '"}'
   
-@app.route("/update") #Add Student
+@app.route("/update") #update Student base on id
 def update():
   id = request.args.get('id')
   name = request.args.get('name')
